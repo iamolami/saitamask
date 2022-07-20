@@ -1,20 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import {createStackNavigator} from "@react-navigation/stack";
+import {NavigationContainer, DefaultTheme} from "@react-navigation/native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import Login from './screen/Login';
+import ForgotPassword from './screen/ForgotPassword';
+import Home from './screen/Home'
+import { useFonts } from 'expo-font';
+
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: "transparent"
+    }
+};
+
+const Stack = createStackNavigator()
+
+const App = () => {
+    const [loaded] = useFonts({
+        SourceBold: require("./assets/fonts/SourceSansPro-Bold.ttf"),
+        SourceSemiBold: require("./assets/fonts/SourceSansPro-SemiBold.ttf"),
+        SourceRegular: require("./assets/fonts/SourceSansPro-Regular.ttf"),
+        SourceLight: require("./assets/fonts/SourceSansPro-Light.ttf"),
+    })
+
+    if (!loaded) return null;
+
+    return (
+        <NavigationContainer theme={theme}>
+            <Stack.Navigator
+                screenOptions={{
+                headerShown: false
+            }}
+                initialRouteName="Home">
+                <Stack.Screen name="Home" component={Home}/>
+                <Stack.Screen name="Login" component={Login}/>
+                <Stack.Screen name="ForgotPassword" component={ForgotPassword}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
